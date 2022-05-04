@@ -1,5 +1,6 @@
 
 import{TypeOrmModuleOptions} from'@nestjs/typeorm'
+import { UserEntity } from 'src/typeorm'
 
 export const Config:TypeOrmModuleOptions={
 type:'mssql',
@@ -9,5 +10,5 @@ username: 'sa',
 password:'1234',
 database:'MyTestDB',
 synchronize:true,
-entities:[]
+entities:[UserEntity]
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserService } from 'src/user/services/user/user.service';
 import { Updateuser } from 'src/user/Types/UpdatedUser';
 import { User } from 'src/user/Types/User';
@@ -10,18 +10,20 @@ export class UserController {
     constructor(private userService:UserService){}
     @Post()
     @UsePipes(ValidationPipe)
-    createUser(@Body() user:User):Usertype{
+    @UseInterceptors(ClassSerializerInterceptor)
+    createUser(@Body() user:User):Promise<Usertype>{
          return this.userService.createUser(user)
     }
 
     @Get()
-
-    getUsers():Usertype[]{
+    @UseInterceptors(ClassSerializerInterceptor)
+    getUsers():Promise<Usertype[]>{
         return this.userService.getUsers()
     }
 
     @Get(':id')
-    getUserById(@Param('id') id :string):Usertype{        
+    @UseInterceptors(ClassSerializerInterceptor)
+    getUserById(@Param('id') id :string):Promise<Usertype>{        
     return this.userService.getUserById(id)
     }
 
