@@ -1,4 +1,9 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, 
+    Controller, Delete, forwardRef, Get, Inject, Param, Patch, Post, Request, UseGuards,
+     UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { AuthService } from 'src/auth/services/auth/auth.service';
+import { JwtGuard } from 'src/Guards/jwtguard';
+import { LocalAuthGuard } from 'src/Guards/Local.guard';
 import { UserService } from 'src/user/services/user/user.service';
 import { Updateuser } from 'src/user/Types/UpdatedUser';
 import { User } from 'src/user/Types/User';
@@ -7,7 +12,9 @@ import { Usertype } from 'src/user/Types/UserType';
 @Controller('user')
 export class UserController {
 
-    constructor(private userService:UserService){}
+    constructor(private userService:UserService ,
+         private authService:AuthService
+       ){}
     @Post()
     @UsePipes(ValidationPipe)
     @UseInterceptors(ClassSerializerInterceptor)
@@ -15,6 +22,7 @@ export class UserController {
          return this.userService.createUser(user)
     }
 
+    @UseGuards(JwtGuard)
     @Get()
     @UseInterceptors(ClassSerializerInterceptor)
     getUsers():Promise<Usertype[]>{
@@ -36,6 +44,20 @@ export class UserController {
     @Delete('/:id')
     deleteUser(@Param('id') id :string){
         return  this.userService.deleteUser(id)
+    }
+
+    @UseGuards(LocalAuthGuard)
+    @Post('login')
+    loginUser(@Request() req){
+        //return req.user
+        return this.authService.login (req.user)
+    
+    }
+
+   @UseGuards(JwtGuard)
+    @Get('homes/:id')
+    goHome(@Request() req){
+        return req.user
     }
 
   
