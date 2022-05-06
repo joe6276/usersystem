@@ -14,7 +14,8 @@ export class UserService {
     private users:Usertype[]=[]
 
 
-    constructor(@InjectRepository(UserEntity)
+    constructor(
+        @InjectRepository(UserEntity)
     private readonly UserRepository:Repository<UserEntity>
     ){}
 
@@ -60,5 +61,9 @@ export class UserService {
         await this.getUserById(id)
         await this.UserRepository.delete(id)
         return( {message:"User Deleted Successfully"})
+    }
+
+    async findone(email:string):Promise<Usertype>{
+        return this.UserRepository.findOne({email})
     }
 }
