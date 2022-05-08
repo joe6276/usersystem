@@ -23,7 +23,7 @@ class User{
 
     sendUser(fullname:string,email:string,age:string,password:string){
         console.log(typeof fullname, typeof email, typeof age, typeof password)
-        const prom = new Promise((resolve,reject)=>{
+        const prom = new Promise<{message:string[], statusCode:number,fullname:string,email:string,age:string}>((resolve,reject)=>{
             fetch('http://localhost:4010/api/user',{
                 method:'Post',
                 body:JSON.stringify({
@@ -38,13 +38,31 @@ class User{
             }).then(data=>{
                 resolve(data.json())
             }).catch(err=>{
-                reject(err.message)
+                reject(err.json())
             })
         })
 
         prom.then(data=>{
             console.log(data);
-            // window.location.replace('http://127.0.0.1:5500/Frontend/login.html')
+            
+                   if(data.fullname){
+                     window.location.replace('http://127.0.0.1:5500/Frontend/login.html')
+                   } 
+                    if(data.message){
+                    const errs= document.getElementById('errs') as HTMLDivElement
+                    const errsuc= document.getElementById('errsuc') as HTMLParagraphElement
+                    // const errsuc1= document.getElementById('errsuc1') as HTMLParagraphElement
+                    // const errsuc2= document.getElementById('errsuc2') as HTMLParagraphElement
+                    data.message? errs.style.visibility='visible':errs.style.visibility='hidden'
+                     data.message ? errsuc.textContent=" * Please Fill In all Fields":''
+                    // data.message[1]?  errsuc1.textContent=data.message[1]:''
+                    // data.message[2]?  errsuc2.textContent=data.message[2]:''
+                    //  data.message ? errsuc.className='err':'suc'
+                    //  data.message ? errsuc1.className='err':'suc'
+                    //  data.message ? errsuc2.className='err':'suc'
+
+                }
+                   
             
         }).catch(err=>{
             console.log(err);

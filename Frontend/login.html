@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./app.css"/>
+    <link rel="stylesheet" href="./logic.css"/>
 </head>
 <body>
     
@@ -15,16 +16,20 @@
     </div>
     <div class="content">
         <div class="div-left">
-            <img src="/Frontend/images/business.jpg" alt="">
+            <img src="https://cdn.pixabay.com/photo/2019/04/27/13/51/spaceman-4160023_960_720.jpg" alt="">
     
         </div>
         <div class="div-right">
             <h1>Login</h1>
-           
+            <div id="errs">
+                <p id="erstatus"> </p> 
+                <p id="errsuc">  </p>
+                
+            </div>
+          
                 
                 <label for="">Enter Email</label>
                 <input  id="input5" />
-               
                 <label for="">Enter Password</label>
                 <input  id="input6" type="password" />
                 <button id="login">Login </button>

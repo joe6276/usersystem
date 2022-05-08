@@ -17,7 +17,7 @@ class Login{
     }
     logUser(email:string,password:string){
     // console.log({email,password})
-        let prom = new Promise<{message:string ,access_token:string}>
+        let prom = new Promise<{message:string,statusCode:number ,access_token:string}>
         
         ((resolve, reject)=>{
             fetch('http://localhost:4010/api/user/login',{
@@ -33,16 +33,34 @@ class Login{
             }).then(data=>{
                 resolve(data.json())
             }).catch(err=>{
-                reject(err)
+                reject(err.message)
             })
         })
         prom.then(data=>{
+            if(data.message){
+                const errs= document.getElementById('errs') as HTMLDivElement
+                const errsuc= document.getElementById('errsuc') as HTMLParagraphElement
+                const erstatus= document.getElementById('erstatus') as HTMLParagraphElement
+                data.message? errs.style.visibility='visible':errs.style.visibility='hidden'
+                 data.message? errsuc.textContent=data.message +" Enter Correct Credentials " : "Successfully logged in" 
+                 data.message? erstatus.textContent=data.statusCode.toString() +": ": ""
+                 data.message ? errsuc.className='err':'suc'
+            }
+ 
+
+            //  setTimeout(()=>{
+            //     errsuc.style.visibility='hidden'
+            //  }, 2000)
+
+            data.message
             if(data.access_token){
                 localStorage.setItem("token", data.access_token);
                 window.location.replace('http://127.0.0.1:5500/Frontend/home.html')
-               
                 
             }
+
+            console.log(data);
+            
             
         }).catch(err=>{
             console.log(err);

@@ -24,6 +24,17 @@
     height: 100%;
     gap: 40px;
 }
+#errs{
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    padding: 5px;
+     visibility: hidden;  
+     margin: 0;
+     height: 10px;
+}
 
 .div-left{
     width: 50%;
@@ -39,7 +50,7 @@
     height: 80%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
 }
 input{
     padding: 5px;
